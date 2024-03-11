@@ -1,4 +1,4 @@
-package sorting_algorithms.bubble_sort;
+package sorting_algorithms.merge_sort;
 
 import java.util.Random;
 
@@ -8,26 +8,26 @@ import utils.WriteToFile;
 public class App {
   public static void main(String[] args) {
 
-    Integer[] unsortedArray = new Integer[Constants.ARRAY_SIZE];
+    Integer[] array = new Integer[Constants.ARRAY_SIZE];
     Random random = new Random();
 
     // Isi array dengan 10.000 angka random
-    for (int i = 0; i < unsortedArray.length; i++) {
-      unsortedArray[i] = random.nextInt(Constants.RANDOM_POOL_SIZE);
+    for (int i = 0; i < array.length; i++) {
+      array[i] = random.nextInt(Constants.RANDOM_POOL_SIZE);
     }
 
     // Tulis array yang belum diurutkan ke dalam file
-    WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/bubble_sort/unsorted.txt");
+    WriteToFile.writeNumberArray(array, "src/sorting_algorithms/merge_sort/unsorted.txt");
 
     // Sort array dan ukur waktu yang dibutuhkan
     long startTime = System.currentTimeMillis();
-    Integer[] sortedArray = BubbleSort.sort(unsortedArray);
+    MergeSort.sort(array, 0, array.length - 1);
     long endTime = System.currentTimeMillis();
 
     System.out.println("Waktu yang dibutuhkan untuk mengurutkan array: " + (endTime - startTime) + " ms");
 
     // Tulis array yang sudah diurutkan ke dalam file
-    WriteToFile.writeNumberArray(sortedArray, "src/sorting_algorithms/bubble_sort/sorted.txt");
+    WriteToFile.writeNumberArray(array, "src/sorting_algorithms/merge_sort/sorted.txt");
 
   }
 }

@@ -1,4 +1,4 @@
-package sorting_algorithms.bubble_sort;
+package sorting_algorithms.insertion_sort;
 
 import java.util.Random;
 
@@ -17,17 +17,17 @@ public class App {
     }
 
     // Tulis array yang belum diurutkan ke dalam file
-    WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/bubble_sort/unsorted.txt");
+    WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/insertion_sort/unsorted.txt");
 
     // Sort array dan ukur waktu yang dibutuhkan
     long startTime = System.currentTimeMillis();
-    Integer[] sortedArray = BubbleSort.sort(unsortedArray);
+    Integer[] sortedArray = InsertionSort.sort(unsortedArray);
     long endTime = System.currentTimeMillis();
 
     System.out.println("Waktu yang dibutuhkan untuk mengurutkan array: " + (endTime - startTime) + " ms");
 
     // Tulis array yang sudah diurutkan ke dalam file
-    WriteToFile.writeNumberArray(sortedArray, "src/sorting_algorithms/bubble_sort/sorted.txt");
+    WriteToFile.writeNumberArray(sortedArray, "src/sorting_algorithms/insertion_sort/sorted.txt");
 
   }
 }

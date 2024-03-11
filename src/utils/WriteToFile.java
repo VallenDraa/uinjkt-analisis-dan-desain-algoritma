@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class WriteToFile {
-  public static void writeNumberArray(Integer[] array, String filename) {
+  public static <T extends Number> void writeNumberArray(T[] array, String filename) {
     try {
       String currentDirectory = System.getProperty("user.dir");
       Path path = Paths.get(currentDirectory, filename);
@@ -15,7 +15,7 @@ public class WriteToFile {
       FileWriter fileWriter = new FileWriter(path.toString());
       PrintWriter printWriter = new PrintWriter(fileWriter);
 
-      for (Integer number : array) {
+      for (T number : array) {
         printWriter.println(number);
       }
 
