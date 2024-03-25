@@ -1,20 +1,13 @@
 package sorting_algorithms.bucket_sort;
 
-import java.util.Random;
-
 import constants.Constants;
-import utils.WriteToFile;
+import utils.GenerateUniqueNumbers;
+import utils.*;
 
 public class App {
   public static void main(String[] args) {
-
-    Float[] unsortedArray = new Float[Constants.ARRAY_SIZE];
-    Random random = new Random();
-
-    // Isi array dengan 10.000 angka random
-    for (int i = 0; i < unsortedArray.length; i++) {
-      unsortedArray[i] = random.nextFloat();
-    }
+    // Isi array dengan angka random
+    Float[] unsortedArray = GenerateUniqueNumbers.uniqueFloats(Constants.ARRAY_SIZE);
 
     // Tulis array yang belum diurutkan ke dalam file
     WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/bucket_sort/unsorted.txt");

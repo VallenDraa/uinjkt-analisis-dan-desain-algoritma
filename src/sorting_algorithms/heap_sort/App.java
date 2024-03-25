@@ -1,20 +1,12 @@
 package sorting_algorithms.heap_sort;
 
-import java.util.Random;
-
 import constants.Constants;
-import utils.WriteToFile;
+import utils.*;
 
 public class App {
   public static void main(String[] args) {
-
-    Integer[] unsortedArray = new Integer[Constants.ARRAY_SIZE];
-    Random random = new Random();
-
-    // Isi array dengan 10.000 angka random
-    for (int i = 0; i < unsortedArray.length; i++) {
-      unsortedArray[i] = random.nextInt(Constants.RANDOM_POOL_SIZE);
-    }
+    // Isi array dengan angka random
+    Integer[] unsortedArray = GenerateUniqueNumbers.uniqueIntegers(Constants.ARRAY_SIZE, Constants.RANDOM_POOL_SIZE);
 
     // Tulis array yang belum diurutkan ke dalam file
     WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/heap_sort/unsorted.txt");
