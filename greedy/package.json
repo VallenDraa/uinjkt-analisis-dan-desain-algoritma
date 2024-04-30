@@ -1,0 +1,14 @@
+{
+	"name": "huffman-and-knapsack",
+	"type": "module",
+	"scripts": {
+		"knapsack": "bun knapsack/knapsack.ts",
+		"huffman": "bun huffman/huffman.ts"
+	},
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	}
+}

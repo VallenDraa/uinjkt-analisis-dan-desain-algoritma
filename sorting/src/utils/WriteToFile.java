@@ -16,7 +16,7 @@ public class WriteToFile {
       PrintWriter printWriter = new PrintWriter(fileWriter);
 
       for (T number : array) {
-        printWriter.println(number);
+        printWriter.print(number + " ");
       }
 
       printWriter.close();

@@ -1,0 +1,3 @@
+bin
+./src/**/sorted.txt
+./src/**/unsorted.txt
