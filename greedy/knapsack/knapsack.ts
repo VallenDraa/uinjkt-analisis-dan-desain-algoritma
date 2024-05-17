@@ -31,14 +31,14 @@ function getKnapSack(capacity: number, items: Item[]): number {
 }
 
 console.time('getKnapSack1');
-const result1 = getKnapSack(10, [
-	new Item(5, 36),
-	new Item(2, 16),
+const result1 = getKnapSack(15, [
+	new Item(5, 34),
+	new Item(7, 16),
 	new Item(3, 21),
 	new Item(6, 57),
-	new Item(4, 28),
+	new Item(4, 32),
 	new Item(3, 24),
-	new Item(2, 13),
+	new Item(4, 15),
 ]);
 console.timeEnd('getKnapSack1');
 
