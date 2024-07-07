@@ -1,13 +1,11 @@
-const INF = 99999;
-
-class AllPairShortestPath {
+class FloydWarshall {
 	V: number;
 
 	constructor() {
 		this.V = 4;
 	}
 
-	floydWarshall(graph: number[][]): void {
+	execute(graph: number[][]): void {
 		const dist: number[][] = Array.from(Array(this.V), () =>
 			new Array(this.V).fill(0),
 		);
@@ -39,16 +37,14 @@ class AllPairShortestPath {
 	}
 
 	printSolution(dist: number[][]): void {
-		console.log(
-			'Following matrix shows the shortest distances between every pair of vertices',
-		);
+		console.log('Shortest distances between every pair of vertices');
 		for (let i = 0; i < this.V; ++i) {
 			let row = '';
 			for (let j = 0; j < this.V; ++j) {
-				if (dist[i][j] === INF) {
+				if (dist[i][j] === Infinity) {
 					row += 'INF\t';
 				} else {
-					row += dist[i][j] + '\t';
+					row += dist[i][j].toFixed(2) + '\t';
 				}
 			}
 			console.log(row);
@@ -56,24 +52,11 @@ class AllPairShortestPath {
 	}
 }
 
-// Driver code
-/* Let us create the following weighted graph
-      10
-  (0)------->(3)
-  |         /|\
-  5 |         |
-  |         | 1
-  \|/         |
-  (1)------->(2)
-      3             */
 const graph: number[][] = [
-	[0, 5, INF, 10],
-	[INF, 0, 3, INF],
-	[INF, INF, 0, 1],
-	[INF, INF, INF, 0],
+	[0, 7.5, 3.8, 4.2],
+	[Infinity, 0, Infinity, 3.4],
+	[Infinity, 4.8, 0, Infinity],
+	[Infinity, Infinity, 1.9, 0],
 ];
 
-const a = new AllPairShortestPath();
-
-// Print the solution
-a.floydWarshall(graph);
+new FloydWarshall().execute(graph);
