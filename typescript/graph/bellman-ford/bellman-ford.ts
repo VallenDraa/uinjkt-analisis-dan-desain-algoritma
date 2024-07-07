@@ -1,16 +1,5 @@
-// a structure to represent a connected, directed, and
-// weighted graph
-
 class Edge {
-	src: number;
-	dest: number;
-	weight: number;
-
-	constructor(src: number, dest: number, weight: number) {
-		this.src = src;
-		this.dest = dest;
-		this.weight = weight;
-	}
+	constructor(public src: number, public dest: number, public weight: number) {}
 }
 
 class Graph {
@@ -28,15 +17,15 @@ class Graph {
 function createGraph(V: number, E: number): Graph {
 	const graph = new Graph(V, E);
 	for (let i = 0; i < E; i++) {
-		graph.edge[i] = new Edge(0, 0, 0); // Initialize with default values
+		graph.edge[i] = new Edge(0, 0, 0);
 	}
 	return graph;
 }
 
 function printArr(dist: number[], V: number): void {
-	console.log('Vertex Distance from Source');
+	console.log('Vertex \t\t Distance from Source');
 	for (let i = 0; i < V; i++) {
-		console.log(`${i} \t\t ${dist[i]}`);
+		console.log(`${i} \t\t ${dist[i].toFixed(2)}`);
 	}
 }
 
@@ -70,19 +59,19 @@ function BellmanFord(graph: Graph, src: number): void {
 	printArr(dist, V);
 }
 
-// Driver program to test methods of graph class
-
-const V = 5;
-const E = 8;
+const V = 10; // Number of vertices in graph
+const E = 10; // Number of edges in graph
 const graph = createGraph(V, E);
 
-graph.edge[0] = new Edge(0, 1, -1);
-graph.edge[1] = new Edge(0, 2, 4);
-graph.edge[2] = new Edge(1, 2, 3);
-graph.edge[3] = new Edge(1, 3, 2);
-graph.edge[4] = new Edge(1, 4, 2);
-graph.edge[5] = new Edge(3, 2, 5);
-graph.edge[6] = new Edge(3, 1, 1);
-graph.edge[7] = new Edge(4, 3, -3);
+graph.edge[0] = new Edge(0, 1, 1.4);
+graph.edge[1] = new Edge(0, 6, 1.5);
+graph.edge[2] = new Edge(1, 2, 0.2);
+graph.edge[3] = new Edge(2, 3, 0.5);
+graph.edge[4] = new Edge(3, 4, 0.6);
+graph.edge[5] = new Edge(6, 7, 3.4);
+graph.edge[6] = new Edge(7, 8, 1.1);
+graph.edge[7] = new Edge(8, 5, 2);
+graph.edge[8] = new Edge(5, 9, 1.5);
+graph.edge[9] = new Edge(4, 5, 2.3);
 
-BellmanFord(graph, 0);
+BellmanFord(graph, 0); // Run Bellman-Ford algorithm from vertex 0 (A)
