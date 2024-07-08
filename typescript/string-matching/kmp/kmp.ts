@@ -57,6 +57,6 @@ function KMPSearch(pattern: string, text: string): void {
 	}
 }
 
-const text = 'ABABDABACDABABCABAB';
-const pattern = 'ABABCABAB';
+const text = 'auditor auditee';
+const pattern = 'auditee';
 KMPSearch(pattern, text);

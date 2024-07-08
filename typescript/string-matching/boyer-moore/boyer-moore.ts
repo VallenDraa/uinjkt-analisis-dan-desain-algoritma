@@ -71,7 +71,6 @@ function search(text: string[], pattern: string[]): void {
 	}
 }
 
-/* Driver program to test the above function */
-const text = 'ABAAABCD'.split('');
-const pattern = 'ABC'.split('');
+const text = 'makan tomat'.split('');
+const pattern = 'tomat'.split('');
 search(text, pattern);

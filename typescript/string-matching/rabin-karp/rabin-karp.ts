@@ -58,9 +58,9 @@ function search(pattern: string, text: string, prime: number): void {
 }
 
 // Driver code
-const text = 'GEEKS FOR GEEKS';
-const pattern = 'GEEK';
-const prime = 101; // A prime number
+const text = 'kiash';
+const pattern = 'ki';
+const prime = 91; 
 
 // Function call
 search(pattern, text, prime);

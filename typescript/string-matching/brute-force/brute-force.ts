@@ -18,14 +18,6 @@ function search(pat: string, txt: string) {
 	}
 }
 
-// Example 1
-const txt1 = 'AABAACAADAABAABA';
-const pat1 = 'AABA';
-console.log('Example 1:');
+const txt1 = 'kulit putih';
+const pat1 = 'putih';
 search(pat1, txt1);
-
-// Example 2
-const txt2 = 'agd';
-const pat2 = 'g';
-console.log('\nExample 2:');
-search(pat2, txt2);
