@@ -1,87 +1,81 @@
-// Number of vertices in the graph
-const V = 5;
-
-// A utility function to find the vertex with
-// minimum key value, from the set of vertices
-// not yet included in MST
-function minKey(key: number[], mstSet: boolean[]): number {
-	// Initialize min value
-	let min = Number.MAX_VALUE;
-	let min_index = -1;
-
-	for (let v = 0; v < V; v++) {
-		if (!mstSet[v] && key[v] < min) {
-			min = key[v];
-			min_index = v;
-		}
-	}
-
-	return min_index;
+interface Edge {
+	source: number;
+	destination: number;
+	weight: number;
 }
 
-// A utility function to print the
-// constructed MST stored in parent[]
-function printMST(parent: number[], graph: number[][]): void {
-	console.log('Edge \t Weight');
-	for (let i = 1; i < V; i++) {
-		console.log(`${parent[i]} - ${i} \t ${graph[i][parent[i]]}`);
+function primAlgo(numberOfNodes: number, edges: Edge[]): void {
+	// Create an adjacency list from the edges
+	const adjList: Map<number, { node: number; weight: number }[]> = new Map();
+	for (let i = 0; i < numberOfNodes; i++) {
+		adjList.set(i, []);
 	}
-}
+	edges.forEach(edge => {
+		adjList
+			.get(edge.source)
+			?.push({ node: edge.destination, weight: edge.weight });
+		adjList
+			.get(edge.destination)
+			?.push({ node: edge.source, weight: edge.weight });
+	});
 
-// Function to construct and print MST for
-// a graph represented using adjacency
-// matrix representation
-function primMST(graph: number[][]): void {
+	// To keep track of vertices included in MST
+	const inMST: boolean[] = new Array(numberOfNodes).fill(false);
+
 	// Array to store constructed MST
-	const parent: number[] = [];
+	const parent: number[] = new Array(numberOfNodes).fill(-1);
 
 	// Key values used to pick minimum weight edge in cut
-	const key: number[] = new Array(V).fill(Number.MAX_VALUE);
+	const key: number[] = new Array(numberOfNodes).fill(Infinity);
+	key[0] = 0; // Make key 0 so that this vertex is picked as first vertex
 
-	// To represent set of vertices included in MST
-	const mstSet: boolean[] = new Array(V).fill(false);
+	// Priority queue to pick the minimum weight edge at every step
+	const pq: { key: number; node: number }[] = [];
+	pq.push({ key: 0, node: 0 });
 
-	// Always include first 1st vertex in MST.
-	// Make key 0 so that this vertex is picked as first vertex.
-	key[0] = 0;
-	parent[0] = -1; // First node is always root of MST
+	let minimumCost = 0;
 
-	// The MST will have V vertices
-	for (let count = 0; count < V - 1; count++) {
-		// Pick the minimum key vertex from the
-		// set of vertices not yet included in MST
-		const u = minKey(key, mstSet);
+	while (pq.length > 0) {
+		// Extract the vertex with minimum key value
+		pq.sort((a, b) => a.key - b.key); // Min-Heap like behavior
+		const { key: currentKey, node: u } = pq.shift()!;
 
-		// Add the picked vertex to the MST Set
-		mstSet[u] = true;
+		if (inMST[u]) continue;
+		inMST[u] = true;
+		minimumCost += currentKey;
 
-		// Update key value and parent index of
-		// the adjacent vertices of the picked vertex.
-		// Consider only those vertices which are not
-		// yet included in MST
-		for (let v = 0; v < V; v++) {
-			// graph[u][v] is non zero only for adjacent vertices of m
-			// mstSet[v] is false for vertices not yet included in MST
-			// Update the key only if graph[u][v] is smaller than key[v]
-			if (graph[u][v] && !mstSet[v] && graph[u][v] < key[v]) {
+		// Iterate through all the adjacent vertices of the dequeued vertex u
+		for (const neighbor of adjList.get(u)!) {
+			const { node: v, weight } = neighbor;
+			if (!inMST[v] && key[v] > weight) {
+				key[v] = weight;
+				pq.push({ key: weight, node: v });
 				parent[v] = u;
-				key[v] = graph[u][v];
 			}
 		}
 	}
 
 	// Print the constructed MST
-	printMST(parent, graph);
+	console.log('Following are the edges in the constructed MST:');
+	for (let i = 1; i < numberOfNodes; i++) {
+		if (parent[i] !== -1) {
+			console.log(`${parent[i]} -- ${i} == ${key[i]}`);
+		}
+	}
+	console.log('Minimum Cost Spanning Tree:', minimumCost);
 }
 
-// Driver code
-const graph: number[][] = [
-	[0, 2, 0, 6, 0],
-	[2, 0, 3, 8, 5],
-	[0, 3, 0, 0, 7],
-	[6, 8, 0, 0, 9],
-	[0, 5, 7, 9, 0],
+// Adjusted edges based on the image provided
+const edges: Edge[] = [
+	{ source: 0, destination: 1, weight: 10 }, // a-b
+	{ source: 0, destination: 3, weight: 15 }, // a-d
+	{ source: 0, destination: 2, weight: 20 }, // a-c
+	{ source: 1, destination: 4, weight: 13 }, // b-e
+	{ source: 2, destination: 4, weight: 5 }, // c-e
+	{ source: 2, destination: 5, weight: 12 }, // c-f
+	{ source: 3, destination: 4, weight: 11 }, // d-e
+	{ source: 3, destination: 5, weight: 16 }, // d-f
+	{ source: 4, destination: 5, weight: 21 }, // e-f
 ];
 
-// Print the solution
-primMST(graph);
+primAlgo(6, edges);
