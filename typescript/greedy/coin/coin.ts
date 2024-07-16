@@ -1,30 +1,69 @@
-function getNumberOfWays(N: number, Coins: number[]) {
-	// Create the ways array to 1 plus the amount
-	// to stop overflow
-	let ways = new Array(N + 1);
-	for (let i = 0; i < N + 1; i++) {
-		ways[i] = 0;
-	}
-	// Set the first way to 1 because its 0 and
-	// there is 1 way to make 0 with 0 coins
-	ways[0] = 1;
+function getMinNumberOfCoins(
+	N: number,
+	Coins: number[],
+): { minCoins: number; resultCoins: number[] } {
+	const minCoins = new Array(N + 1).fill(Infinity);
+	const resultCoins = new Array(N + 1).fill(-1);
 
-	// Go through all of the coins
+	minCoins[0] = 0;
+
 	for (let i = 0; i < Coins.length; i++) {
-		// Make a comparison to each index value
-		// of ways with the coin value.
-		for (let j = 0; j < ways.length; j++) {
-			if (Coins[i] <= j) {
-				// Update the ways array
-				ways[j] += ways[j - Coins[i]];
+		for (let j = Coins[i]; j <= N; j++) {
+			if (
+				minCoins[j - Coins[i]] !== Infinity &&
+				minCoins[j - Coins[i]] + 1 < minCoins[j]
+			) {
+				minCoins[j] = minCoins[j - Coins[i]] + 1;
+				resultCoins[j] = Coins[i];
 			}
 		}
 	}
 
-	// return the value at the Nth position
-	// of the ways array.
+	return {
+		minCoins: minCoins[N] === Infinity ? -1 : minCoins[N],
+		resultCoins,
+	};
+}
+
+function getNumberOfWays(N: number, Coins: number[]): number {
+	const ways = new Array(N + 1).fill(0);
+	ways[0] = 1;
+
+	for (let i = 0; i < Coins.length; i++) {
+		for (let j = Coins[i]; j <= N; j++) {
+			ways[j] += ways[j - Coins[i]];
+		}
+	}
+
 	return ways[N];
 }
 
-let Coins = [1, 5, 10];
-console.log(getNumberOfWays(12, Coins));
+function printFormattedResult(N: number, resultCoins: number[]) {
+	const coinsUsed: number[] = [];
+	let current = N;
+	while (current > 0) {
+		coinsUsed.push(resultCoins[current]);
+		current -= resultCoins[current];
+	}
+	coinsUsed.sort((a, b) => a - b); // Optional: sort the coins used for easier reading
+	console.log(coinsUsed.join(', '));
+}
+
+// Example usage
+const Coins = [1, 2, 3, 4, 5, 6, 7];
+const N = 75;
+
+const { minCoins, resultCoins } = getMinNumberOfCoins(N, Coins);
+
+if (minCoins !== -1) {
+	console.log(`Minimum number of coins to make ${N}: ${minCoins}`);
+	console.log('Coins used:');
+	printFormattedResult(N, resultCoins);
+} else {
+	console.log(`It's not possible to make ${N} with the given coins.`);
+}
+
+const numberOfWays = getNumberOfWays(N, Coins);
+console.log(
+	`Number of ways to make ${N} with the given coins: ${numberOfWays}`,
+);
