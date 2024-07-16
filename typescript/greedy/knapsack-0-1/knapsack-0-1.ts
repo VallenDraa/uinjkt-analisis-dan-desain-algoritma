@@ -1,4 +1,3 @@
-// Returns the value of maximum profit
 function knapSackRec(
 	W: number,
 	wt: number[],
@@ -6,7 +5,6 @@ function knapSackRec(
 	n: number,
 	dp: number[][],
 ): number {
-	// Base condition
 	if (n == 0 || W == 0) {
 		return 0;
 	}
@@ -16,12 +14,8 @@ function knapSackRec(
 	}
 
 	if (wt[n - 1] > W) {
-		// Store the value of function call
-		// stack in table before return
 		return (dp[n][W] = knapSackRec(W, wt, val, n - 1, dp));
-	}
-	// Return value of table after storing
-	else {
+	} else {
 		return (dp[n][W] = Math.max(
 			val[n - 1] + knapSackRec(W - wt[n - 1], wt, val, n - 1, dp),
 			knapSackRec(W, wt, val, n - 1, dp),
@@ -30,18 +24,24 @@ function knapSackRec(
 }
 
 function knapSack(W: number, wt: number[], val: number[], N: number): number {
-	// Declare the dp table dynamically
-	// Intializing dp tables(row and cols) with -1 below
 	const dp: number[][] = Array.from({ length: N + 1 }, () =>
 		Array(W + 1).fill(-1),
 	);
 	return knapSackRec(W, wt, val, N, dp);
 }
 
-const profit: number[] = [60, 100, 120];
-const weight: number[] = [10, 20, 30];
-
-const W: number = 50;
+// Extracted data
+const weight: number[] = [
+	80, 82, 85, 70, 72, 70, 66, 50, 55, 25, 50, 55, 40, 48, 50, 32, 22, 60, 30,
+	32, 40, 38, 35, 32, 25, 28, 30, 22, 50, 30, 45, 30, 60, 50, 20, 65, 20, 25,
+	30, 10, 20, 25, 15, 10, 10, 10, 4, 4, 2, 1,
+];
+const profit: number[] = [
+	220, 208, 198, 192, 180, 180, 165, 162, 160, 158, 155, 130, 125, 122, 120,
+	118, 115, 110, 105, 101, 100, 100, 98, 96, 95, 90, 88, 82, 80, 77, 75, 73, 72,
+	70, 69, 66, 65, 63, 60, 58, 56, 50, 30, 20, 15, 10, 8, 5, 3, 1,
+];
+const W: number = 1000;
 const N: number = profit.length;
 
 console.log(knapSack(W, weight, profit, N));
