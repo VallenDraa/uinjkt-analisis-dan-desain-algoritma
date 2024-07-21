@@ -1,72 +1,79 @@
-// Function to generate a super-increasing sequence for the public key
-function generateSuperIncreasingSequence(n: number): number[] {
-	const sequence: number[] = [Math.floor(Math.random() * 100) + 1];
-	while (sequence.length < n) {
-		const nextElement =
-			sequence.reduce((a, b) => a + b, 0) + Math.floor(Math.random() * 10) + 1;
-		sequence.push(nextElement);
-	}
-	return sequence;
-}
+// knapsackCipher.ts
 
-// Function to generate the private key from the public key
-function generatePrivateKey(
-	publicKey: number[],
-	q: number,
-	r: number,
-): number[] {
-	const privateKey: number[] = publicKey.map(element => (r * element) % q);
-	return privateKey;
-}
-
-// Function to encrypt the plaintext using the public key
-function knapsackEncrypt(plaintext: string, publicKey: number[]): number {
-	const encryptedMessage = plaintext.split('').reduce((sum, char, index) => {
-		return char === '1' ? sum + publicKey[index] : sum;
-	}, 0);
-	return encryptedMessage;
-}
-
-// Function to decrypt the ciphertext using the private key
-function knapsackDecrypt(
-	ciphertext: number,
-	privateKey: number[],
-	q: number,
-): string {
-	const rInverse = modInverse(3, q); // Modular multiplicative inverse of r
-	let decryptedMessage = '';
-	privateKey.reverse().forEach(element => {
-		if ((ciphertext * rInverse) % q >= element) {
-			decryptedMessage = '1' + decryptedMessage;
-			ciphertext -= element;
-		} else {
-			decryptedMessage = '0' + decryptedMessage;
+function encryptBlock(block: string, publicKey: number[]): number {
+	let encryptedValue = 0;
+	for (let i = 0; i < block.length; i++) {
+		if (block[i] === '1') {
+			encryptedValue += publicKey[i];
 		}
-	});
-	return decryptedMessage;
-}
-
-// Function to calculate modular multiplicative inverse
-function modInverse(a: number, m: number): number {
-	a = ((a % m) + m) % m;
-	for (let x = 1; x < m; x++) {
-		if ((a * x) % m == 1) return x;
 	}
-	return 1;
+	return encryptedValue;
 }
 
-const n = 8; // Number of elements in the super-increasing sequence
-const q = 103; // Modulus (should be greater than the sum of the super-increasing sequence)
-const r = 3; // Multiplier for generating private key
+function gcdExtended(
+	a: number,
+	b: number,
+): { g: number; x: number; y: number } {
+	if (a === 0) {
+		return { g: b, x: 0, y: 1 };
+	}
+	const { g, x, y } = gcdExtended(b % a, a);
+	return { g: g, x: y - Math.floor(b / a) * x, y: x };
+}
 
-// Generate the public key and private key
-const publicKey = generateSuperIncreasingSequence(n);
-const privateKey = generatePrivateKey(publicKey, q, r);
+function modInverse(a: number, m: number): number {
+	const { g, x } = gcdExtended(a, m);
+	if (g !== 1) {
+		throw new Error('Modular inverse does not exist');
+	}
+	return ((x % m) + m) % m;
+}
 
-const plaintext = '11001010';
-const ciphertext = knapsackEncrypt(plaintext, publicKey);
-const decryptedMessage = knapsackDecrypt(ciphertext, privateKey, q);
+function decryptBlock(
+	encryptedValue: number,
+	privateKey: number[],
+	modulus: number,
+	modInverseN: number,
+): string {
+	const decryptedValue = (encryptedValue * modInverseN) % modulus;
+	const binaryBlock = Array(privateKey.length).fill('0');
 
-console.log('Original Message:', plaintext);
-console.log('Encrypted Ciphertext:', ciphertext);
-console.log('Decrypted Message:', decryptedMessage);
+	let remainingValue = decryptedValue;
+	for (let i = privateKey.length - 1; i >= 0; i--) {
+		if (remainingValue >= privateKey[i]) {
+			remainingValue -= privateKey[i];
+			binaryBlock[i] = '1';
+		}
+	}
+
+	return binaryBlock.join('');
+}
+
+const privateKey = [2, 5, 11, 23, 47, 95, 191, 378];
+const modulus = 479;
+const n = 73;
+
+// Calculate public key
+const publicKey = privateKey.map(key => (key * n) % modulus);
+
+const binaryBlocks = [
+	'01010011', // S
+];
+
+console.log('binaryBlocks:', binaryBlocks);
+
+// Encrypt
+const encryptedBlocks = binaryBlocks.map(block =>
+	encryptBlock(block, publicKey),
+);
+
+const ciphertext = encryptedBlocks.join('');
+console.log('Ciphertext: ', ciphertext);
+
+// Decrypt
+const modInverseN = modInverse(n, modulus);
+
+const decryptedBinaryBlocks = encryptedBlocks.map(block =>
+	decryptBlock(block, privateKey, modulus, modInverseN),
+);
+console.log('Decrypted Binary Blocks: ', decryptedBinaryBlocks);
