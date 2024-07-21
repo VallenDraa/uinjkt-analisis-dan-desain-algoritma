@@ -1,59 +1,53 @@
 class Item {
-	constructor(public weight: number, public profit: number) {}
+	constructor(
+		public weight: number,
+		public profit: number,
+		public index: number,
+	) {}
 }
 
-function getKnapSack(capacity: number, items: Item[]): number {
-	const arr = new Array(items.length + 1);
+function greedyByWeight(
+	capacity: number,
+	items: Item[],
+): { maxProfit: number; selectedItems: Item[] } {
+	// Calculate profit-to-weight ratio and sort items by this ratio in descending order
+	const sortedItems = items.sort(
+		(a, b) => b.profit / b.weight - a.profit / a.weight,
+	);
 
-	for (let i = 0; i < arr.length; i++) {
-		arr[i] = new Array(capacity + 1).fill(0);
-	}
+	let totalProfit = 0;
+	let remainingCapacity = capacity;
+	const selectedItems = [];
 
-	for (let i = 1; i <= items.length; i++) {
-		for (let j = 0; j <= capacity; j++) {
-			// Don't pick i-th element if j-weights[i-1] is negative
-			if (items[i - 1].weight > j) {
-				arr[i][j] = arr[i - 1][j];
-			}
-
-			// Store the max value that we get by picking or leaving the i-th item
-			else {
-				arr[i][j] = Math.max(
-					arr[i - 1][j],
-					arr[i - 1][j - items[i - 1].weight] + items[i - 1].profit,
-				);
-			}
+	for (const item of sortedItems) {
+		if (item.weight <= remainingCapacity) {
+			selectedItems.push(item);
+			totalProfit += item.profit;
+			remainingCapacity -= item.weight;
 		}
 	}
 
-	// Return maximum value
-	return arr[items.length][capacity];
+	return { maxProfit: totalProfit, selectedItems };
 }
 
-console.time('getKnapSack1');
-const result1 = getKnapSack(15, [
-	new Item(5, 34),
-	new Item(7, 16),
-	new Item(3, 21),
-	new Item(6, 57),
-	new Item(4, 32),
-	new Item(3, 24),
-	new Item(4, 15),
-]);
-console.timeEnd('getKnapSack1');
+const items = [
+	new Item(14, 30000, 1),
+	new Item(12, 80000, 3),
+	new Item(15, 30000, 7),
+	new Item(20, 50000, 2),
+	new Item(30, 40000, 5),
+	new Item(10, 60000, 6),
+	new Item(6, 75000, 4),
+];
 
-console.time('getKnapSack2');
-const result2 = getKnapSack(9, [
-	new Item(5, 32),
-	new Item(2, 59),
-	new Item(3, 30),
-	new Item(2, 17),
-	new Item(6, 81),
-	new Item(2, 16),
-	new Item(4, 39),
-	new Item(3, 25),
-]);
-console.timeEnd('getKnapSack2');
+const capacity = 91;
 
-console.log(result1);
-console.log(result2);
+const weightRes = greedyByWeight(capacity, items);
+
+console.log('Maximum Profit:', weightRes.maxProfit);
+console.log('Selected Items:');
+weightRes.selectedItems.forEach(item =>
+	console.log(
+		`Item ${item.index}: Weight = ${item.weight}, Profit = ${item.profit}`,
+	),
+);
