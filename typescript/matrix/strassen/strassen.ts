@@ -50,17 +50,13 @@ function strassen(x: Matrix, y: Matrix): Matrix {
 
 // Driver's code
 const A: Matrix = [
-	[1, 1, 1, 1],
-	[2, 2, 2, 2],
-	[3, 3, 3, 3],
-	[2, 2, 2, 2],
+	[1, 2],
+	[3, 4],
 ];
 
 const B: Matrix = [
-	[1, 1, 1, 1],
-	[2, 2, 2, 2],
-	[3, 3, 3, 3],
-	[2, 2, 2, 2],
+	[5, 6],
+	[7, 8],
 ];
 
 const C = strassen(A, B);
