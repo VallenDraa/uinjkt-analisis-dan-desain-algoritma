@@ -1,35 +1,40 @@
 package sorting_algorithms.counting_sort;
 
-import java.util.Arrays;
-
 public class CountingSort {
-  public static Integer[] sort(Integer[] inputArray) {
-    int n = inputArray.length;
-    int m = 0;
+  public static int[] sort(int[] array) {
+    int size = array.length;
+    int[] output = new int[size];
 
-    for (int i = 0; i < n; i++) {
-      m = Math.max(m, inputArray[i]);
+    // Find the largest element of the array
+    int max = array[0];
+    for (int i = 1; i < size; i++) {
+      if (array[i] > max)
+        max = array[i];
+    }
+    int[] count = new int[max + 1];
+
+    // Initialize count array with all zeros.
+    for (int i = 0; i <= max; i++) {
+      count[i] = 0;
     }
 
-    Integer[] countArray = new Integer[m + 1];
-    Arrays.fill(countArray, 0);
-
-    for (int i = 0; i < n; i++) {
-      countArray[inputArray[i]]++;
+    // Store the count of each element
+    for (int i = 0; i < size; i++) {
+      count[array[i]]++;
     }
 
-    for (int i = 1; i <= m; i++) {
-      countArray[i] += countArray[i - 1];
+    // Store the cumulative count of each array
+    for (int i = 1; i <= max; i++) {
+      count[i] += count[i - 1];
     }
 
-    Integer[] outputArray = new Integer[n];
-    Arrays.fill(outputArray, 0);
-
-    for (int i = n - 1; i >= 0; i--) {
-      outputArray[countArray[inputArray[i]] - 1] = inputArray[i];
-      countArray[inputArray[i]]--;
+    // Find the index of each element of the original array in count array, and
+    // place the elements in output array
+    for (int i = size - 1; i >= 0; i--) {
+      output[count[array[i]] - 1] = array[i];
+      count[array[i]]--;
     }
 
-    return outputArray;
+    return output;
   }
 }

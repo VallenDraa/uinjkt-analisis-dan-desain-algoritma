@@ -24,4 +24,22 @@ public class WriteToFile {
       e.printStackTrace();
     }
   }
+
+  public static void writeNumberArray(int[] array, String filename) {
+    try {
+      String currentDirectory = System.getProperty("user.dir");
+      Path path = Paths.get(currentDirectory, filename);
+
+      FileWriter fileWriter = new FileWriter(path.toString());
+      PrintWriter printWriter = new PrintWriter(fileWriter);
+
+      for (int number : array) {
+        printWriter.print(number + " ");
+      }
+
+      printWriter.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }
