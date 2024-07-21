@@ -1,6 +1,5 @@
 package sorting_algorithms.counting_sort;
 
-import utils.GenerateUniqueNumbers;
 import utils.*;
 
 import constants.Constants;
@@ -8,7 +7,8 @@ import constants.Constants;
 public class App {
   public static void main(String[] args) {
     // Isi array dengan angka random
-    Integer[] unsortedArray = GenerateUniqueNumbers.uniqueIntegers(Constants.ARRAY_SIZE, Constants.RANDOM_POOL_SIZE);
+    Integer[] unsortedArray = GenerateUniqueNumbers.uniqueIntegers(Constants.COUNTING_ARRAY_SIZE,
+        Constants.COUNTING_RANDOM_POOL_SIZE);
 
     // Tulis array yang belum diurutkan ke dalam file
     WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/counting_sort/unsorted.txt");
