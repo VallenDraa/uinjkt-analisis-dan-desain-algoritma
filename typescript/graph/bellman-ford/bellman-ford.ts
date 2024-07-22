@@ -59,19 +59,19 @@ function BellmanFord(graph: Graph, src: number): void {
 	printArr(dist, V);
 }
 
-const V = 10; // Number of vertices in graph
-const E = 10; // Number of edges in graph
-const graph = createGraph(V, E);
+const graph = createGraph(10, 11);
 
-graph.edge[0] = new Edge(0, 1, 1.4);
-graph.edge[1] = new Edge(0, 6, 1.5);
-graph.edge[2] = new Edge(1, 2, 0.2);
-graph.edge[3] = new Edge(2, 3, 0.5);
-graph.edge[4] = new Edge(3, 4, 0.6);
-graph.edge[5] = new Edge(6, 7, 3.4);
-graph.edge[6] = new Edge(7, 8, 1.1);
-graph.edge[7] = new Edge(8, 5, 2);
-graph.edge[8] = new Edge(5, 9, 1.5);
-graph.edge[9] = new Edge(4, 5, 2.3);
+// Define edges (source, destination, weight)
+graph.edge[0] = new Edge(0, 2, 1.4); // A->C
+graph.edge[1] = new Edge(0, 7, 1.5); // A->H
+graph.edge[2] = new Edge(2, 3, 0.2); // C->D
+graph.edge[3] = new Edge(7, 8, 3.4); // H->I
+graph.edge[4] = new Edge(3, 4, 0.5); // D->E
+graph.edge[5] = new Edge(8, 9, 1.1); // I->J
+graph.edge[6] = new Edge(4, 5, 0.6); // E->F
+graph.edge[7] = new Edge(4, 9, 1.7); // E->J
+graph.edge[8] = new Edge(5, 6, 2.3); // F->G
+graph.edge[9] = new Edge(9, 6, 2.3); // J->G
+graph.edge[10] = new Edge(6, 1, 1.5); // G->B
 
-BellmanFord(graph, 0); // Run Bellman-Ford algorithm from vertex 0 (A)
+BellmanFord(graph, 0);
