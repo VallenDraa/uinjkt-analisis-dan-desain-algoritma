@@ -6,7 +6,8 @@ import utils.*;
 public class App {
   public static void main(String[] args) {
     // Isi array dengan angka random
-    Integer[] unsortedArray = GenerateUniqueNumbers.uniqueIntegers(Constants.ARRAY_SIZE, Constants.RANDOM_POOL_SIZE);
+    Integer[] unsortedArray = GenerateUniqueNumbers.uniqueIntegers(Constants.INSERTION_ARRAY_SIZE,
+        Constants.RANDOM_POOL_SIZE);
 
     // Tulis array yang belum diurutkan ke dalam file
     WriteToFile.writeNumberArray(unsortedArray, "src/sorting_algorithms/insertion_sort/unsorted.txt");
